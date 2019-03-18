@@ -53,14 +53,6 @@ public class Waitress implements Runnable {
                 eatingException.printStackTrace();
             }
         }
-
-        //TODO move to SushiBar class, and make it run after all threads are closed. this only works with one waitress.
-        SushiBar.write(" ***** NO MORE CUSTOMERS - THE SHOP IS CLOSED NOW. *****");
-        SushiBar.write("Number of customers: " + SushiBar.customerCounter.get());
-        SushiBar.write("Number of takeaway orders: " + SushiBar.takeawayOrders.get());
-        SushiBar.write("Number of orders served in bar: " + SushiBar.servedOrders.get());
-        SushiBar.write("Total number of orders: " + SushiBar.totalOrders.get());
-
     }
 
 

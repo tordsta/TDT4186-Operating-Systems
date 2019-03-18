@@ -51,6 +51,19 @@ public class SushiBar {
         }
         waitress1.start();
 
+        //waits for the threads to end
+        try{
+            door.join();
+            waitress1.join();
+        } catch (Exception endE){
+            endE.printStackTrace();
+        }
+
+        SushiBar.write(" ***** NO MORE CUSTOMERS - THE SHOP IS CLOSED NOW. *****");
+        SushiBar.write("Number of customers: " + SushiBar.customerCounter.get());
+        SushiBar.write("Number of takeaway orders: " + SushiBar.takeawayOrders.get());
+        SushiBar.write("Number of orders served in bar: " + SushiBar.servedOrders.get());
+        SushiBar.write("Total number of orders: " + SushiBar.totalOrders.get());
     }
 
     //Writes actions in the log file and console
