@@ -36,23 +36,20 @@ public class SushiBar {
         servedOrders = new SynchronizedInteger(0);
         takeawayOrders = new SynchronizedInteger(0);
 
-        // TODO initialize the bar and start the different threads
-
-        //start clock
-        Clock clock = new Clock(20);
+        //init threads
+        Clock clock = new Clock(duration);
         WaitingArea waitingArea = new WaitingArea(waitingAreaCapacity);
-
         Thread door = new Thread(new Door(waitingArea));
+        Thread waitress1 = new Thread(new Waitress(waitingArea)); //TODO implement multiple waitresses
+
+        //start threads
         door.start();
-
-        Thread waitress1 = new Thread(new Waitress(waitingArea));
+        try{
+            waitress1.sleep(100);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         waitress1.start();
-
-        System.out.println("the thread is started and the program moved on");
-
-//        Door door = new Door(waitingArea);
-//        Waitress waitress1 = new Waitress(waitingArea);
-
 
     }
 

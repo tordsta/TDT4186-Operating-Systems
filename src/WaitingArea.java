@@ -28,9 +28,7 @@ public class WaitingArea {
             throw new IllegalStateException();
         } else {
             customerQueue.add(customer);
-            //TODO notify waitress that customer is added
-//            notifyAll();
-//            System.out.println("New customer in waiting area: " + customer.getCustomerID());
+            SushiBar.customerCounter.increment();
         }
     }
 
@@ -41,8 +39,6 @@ public class WaitingArea {
         if(customerQueue.isEmpty()){
             throw new IllegalStateException();
         } else {
-//            System.out.println("Customer exit waiting area: " + customerQueue.peek().getCustomerID());
-            //TODO notify Door that customers leaving
             return customerQueue.remove();
         }
 
@@ -50,10 +46,6 @@ public class WaitingArea {
 
     public synchronized Queue<Customer> getCustomerQueue(){
         return this.customerQueue;
-    }
-
-    public synchronized int getCapacity(){
-        return this.capacity;
     }
 
     // Add more methods as you see fit

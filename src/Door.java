@@ -1,7 +1,3 @@
-import javax.management.monitor.Monitor;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
 /**
  * This class implements the Door component of the sushi bar assignment
  * The Door corresponds to the Producer in the producer/consumer problem
@@ -31,10 +27,10 @@ public class Door implements Runnable {
                 try{
                     waitingArea.enter(customer);
                     waitingArea.notify();
-                    System.out.println("Customer " + customer.getCustomerID() + " is now waiting.");
+                    SushiBar.write("Customer " + customer.getCustomerID() + " is now waiting.");
                 } catch (Exception e){
                     try{
-                        System.out.println("Door closed, no more space in waiting room");
+//                        SushiBar.write("Door closed, no more space in waiting room");
                         waitingArea.wait();
                     } catch (InterruptedException ie){
                         ie.printStackTrace();
@@ -42,7 +38,13 @@ public class Door implements Runnable {
 
                 }
             }
+            try{
+                Thread.sleep(SushiBar.doorWait);
+            } catch (Exception ee){
+                ee.printStackTrace();
+            }
         }
+        System.out.println("***** DOOR CLOSED *****");
     }
     // Add more methods as you see fit
 }
