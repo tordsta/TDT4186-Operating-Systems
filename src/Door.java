@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Door implements Runnable {
 
-    private WaitingArea waitingArea;
+    private final WaitingArea waitingArea;
 
     /**
      * Creates a new Door. Make sure to save the
@@ -23,37 +23,26 @@ public class Door implements Runnable {
      * The method should create customers at random intervals and try to put them in the waiting area
      */
     @Override
-    public synchronized void run() {
-        while(true) {
+    public void run() {
+        while(SushiBar.isOpen) { //handles opening and closing times
             Customer customer = new Customer();
-
             //customer enters waiting area
-            if(waitingArea.getCustomerQueue().size() < waitingArea.getCapacity()){
-                waitingArea.enter(customer);
-                System.out.println("Customer " + customer.getCustomerID() + " is now waiting.");
-            } else {
-                try {
-                    System.out.println("wait block start");
-                    wait();
-                    System.out.println("wait block end");
-                } catch (InterruptedException e) {
-                    System.out.println("the wait failed");
-                    e.printStackTrace();
+            synchronized (waitingArea){
+                try{
+                    waitingArea.enter(customer);
+                    waitingArea.notify();
+                    System.out.println("Customer " + customer.getCustomerID() + " is now waiting.");
+                } catch (Exception e){
+                    try{
+                        System.out.println("Door closed, no more space in waiting room");
+                        waitingArea.wait();
+                    } catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+
                 }
             }
-
-
-            // TODO make random and cleanup. move up in other try catch
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            //TimeUnit.SECONDS.sleep(1);
         }
-
-
     }
-
     // Add more methods as you see fit
 }

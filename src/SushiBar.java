@@ -38,6 +38,8 @@ public class SushiBar {
 
         // TODO initialize the bar and start the different threads
 
+        //start clock
+        Clock clock = new Clock(20);
         WaitingArea waitingArea = new WaitingArea(waitingAreaCapacity);
 
         Thread door = new Thread(new Door(waitingArea));

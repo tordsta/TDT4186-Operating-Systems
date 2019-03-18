@@ -4,8 +4,8 @@
  */
 public class Waitress implements Runnable {
 
-    WaitingArea waitingArea;
-    Customer customerServed;
+    private final WaitingArea waitingArea;
+    private Customer customerServed;
 
     /**
      * Creates a new waitress. Make sure to save the parameter in the class
@@ -21,43 +21,42 @@ public class Waitress implements Runnable {
      * created for this instance
      */
     @Override
-    public synchronized void run() {
-        // TODO Implement required functionality
+    public void run() {
+        while(SushiBar.isOpen || !waitingArea.getCustomerQueue().isEmpty()){ //runs while sushibar is open and while there are customers left
+            synchronized (waitingArea) {
+                try{
+                    this.customerServed = waitingArea.next();
+                    waitingArea.notify();
 
-        while(true){
-            if(!waitingArea.getCustomerQueue().isEmpty()){
-                this.customerServed = waitingArea.next();
+                    //Timings for customers
+                    System.out.println("Customer " + customerServed.getCustomerID() + " is now ordering.");
+                    // TODO implement waitress order time
+                    try {
+                        Thread.sleep(500);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Customer " + customerServed.getCustomerID() + " is now eating.");
+                    // TODO implement customer eat time
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Customer " + customerServed.getCustomerID() + " is now leaving.");
 
-                System.out.println("Customer " + customerServed.getCustomerID() + " is now eating.");
-                // TODO implement waitress order time
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e){
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    try{
+                        System.out.println("Waitress waiting, no more customers in queue");
+                        waitingArea.wait();
+                    } catch (InterruptedException error){
+                        e.printStackTrace();
+                    }
                 }
-                // TODO implement customer eat time
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-                System.out.println("Customer " + customerServed.getCustomerID() + " is now leaving.");
 
-            } else {
-                System.out.println("the waitress is waiting");
-                try {
-                    wait();
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
             }
         }
-
     }
 
 

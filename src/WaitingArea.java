@@ -39,7 +39,7 @@ public class WaitingArea {
      */
     public synchronized Customer next() {
         if(customerQueue.isEmpty()){
-            return null;
+            throw new IllegalStateException();
         } else {
 //            System.out.println("Customer exit waiting area: " + customerQueue.peek().getCustomerID());
             //TODO notify Door that customers leaving

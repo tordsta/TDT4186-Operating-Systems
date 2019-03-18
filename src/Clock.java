@@ -16,6 +16,7 @@ public class Clock {
     class RemindTask extends TimerTask {
         public void run() {
             SushiBar.isOpen = false; //prevents creating new customers.
+            System.out.println("SushiBar is closing.");
             timer.cancel();
         }
     }
